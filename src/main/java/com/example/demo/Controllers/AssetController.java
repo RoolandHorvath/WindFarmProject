@@ -19,7 +19,6 @@ public class AssetController {
         this.assetService = assetService;
     }
 
-
     @GetMapping("/locations")
     public ResponseEntity<List<AssetLocationDTO>> getAllAssetLocations() {
         List<AssetLocationDTO> assetLocations = assetService.getAllAssetLocations();
@@ -31,5 +30,4 @@ public class AssetController {
             return ResponseEntity.noContent().build();
         }
     }
-
 }
