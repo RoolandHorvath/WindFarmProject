@@ -21,13 +21,10 @@ public class TrafficData {
     private Integer mmsi;
 
     @Column(name = "Class", columnDefinition = "CHAR(5)")
-    private String vesselClass; // 'class' is a reserved keyword in Java
+    private String vesselClass;
 
     @Column(name = "MsgTypeID")
     private Byte msgTypeId;
-
-    // Assuming Position is stored as a string representing a geography type
-    // If you need to perform spatial operations, you might need to use specific GIS/Spatial libraries
 
     @Transient
     private Point position;

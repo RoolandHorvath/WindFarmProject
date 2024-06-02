@@ -23,10 +23,10 @@ public class AssetController {
     public ResponseEntity<List<AssetLocationDTO>> getAllAssetLocations() {
         List<AssetLocationDTO> assetLocations = assetService.getAllAssetLocations();
         if (assetLocations != null && !assetLocations.isEmpty()) {
-            System.out.println("Sending asset locations to frontend: " + assetLocations);
+            System.out.println("Sending asset: " + assetLocations);
             return ResponseEntity.ok(assetLocations);
         } else {
-            System.out.println("No asset locations found to send to frontend.");
+            System.out.println("No asset found");
             return ResponseEntity.noContent().build();
         }
     }

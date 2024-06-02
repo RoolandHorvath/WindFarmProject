@@ -38,11 +38,8 @@ public class Asset {
     @Column(name = "Name")
     private String name;
 
-    // For the 'Position' column, if you're using latitude and longitude you can map them as two separate fields
-    // or create a custom type to handle the 'geography' data type from SQL Server.
-    // This example will map them as two separate fields for simplicity.
-    @Transient // Mark it transient if you don't have an appropriate type handler
-    private Object position; // Replace with a proper type to handle the geography type.
+    @Transient
+    private Object position;
 
     @Column(name = "CreatedAt")
     @Temporal(TemporalType.TIMESTAMP)

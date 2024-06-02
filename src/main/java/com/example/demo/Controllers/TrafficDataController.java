@@ -1,6 +1,7 @@
 package com.example.demo.Controllers;
 
 import com.example.demo.DTOs.TrafficDataDTO;
+import com.example.demo.DTOs.TrafficDataFilteredDTO;
 import com.example.demo.Services.TrafficDataService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,5 +25,14 @@ public class TrafficDataController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(trafficData);
+    }
+
+    @GetMapping("/daily-averages")
+    public ResponseEntity<List<TrafficDataFilteredDTO>> getDailyAverages() {
+        List<TrafficDataFilteredDTO> averages = trafficDataService.getDailyAverageTrafficData();
+        if (averages.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(averages);
     }
 }

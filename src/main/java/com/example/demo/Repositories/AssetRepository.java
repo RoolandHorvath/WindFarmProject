@@ -10,7 +10,7 @@ import java.util.List;
 public interface AssetRepository extends JpaRepository<Asset, Long> {
 
     @Query(value = "SELECT TOP 1 a.Name, a.Position.ToString() AS pointString FROM Assets a", nativeQuery = true)
-    Object[] findFirstAssetLocation();  // This is expected to return an Object[] where each element is another Object[] if nested.
+    Object[] findFirstAssetLocation();
 
     @Query(value = "SELECT TOP 1 a.Name FROM Assets a", nativeQuery = true)
     String findFirstAssetName();

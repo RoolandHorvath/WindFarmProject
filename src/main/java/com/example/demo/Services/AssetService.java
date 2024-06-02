@@ -47,7 +47,6 @@ public class AssetService {
     }
 
     public AssetLocationDTO getFirstAssetLocation() {
-        // Native query to fetch the first asset's name and position as a string
         List<Object[]> results = entityManager.createNativeQuery(
                 "SELECT a.Name, a.Position.ToString() AS pointString FROM Assets a ORDER BY a.Id ASC"
         ).setMaxResults(1).getResultList();
@@ -60,7 +59,7 @@ public class AssetService {
                 return parsePointString(name, pointString);
             }
         }
-        System.out.println("Unexpected result structure or types, or no data found.");
+        System.out.println("No data found");
         return null;
     }
 }
