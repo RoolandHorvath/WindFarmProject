@@ -6,6 +6,7 @@ import com.example.demo.Services.TrafficDataService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
@@ -28,8 +29,13 @@ public class TrafficDataController {
     }
 
     @GetMapping("/daily-averages")
-    public ResponseEntity<List<TrafficDataFilteredDTO>> getDailyAverages() {
-        List<TrafficDataFilteredDTO> averages = trafficDataService.getDailyAverageTrafficData();
+    public ResponseEntity<List<TrafficDataFilteredDTO>> getDailyAverages(@RequestParam(required = false) String date) {
+        List<TrafficDataFilteredDTO> averages;
+        if (date != null) {
+            averages = trafficDataService.getDailyAverageTrafficDataByDate(date);
+        } else {
+            averages = trafficDataService.getDailyAverageTrafficData();
+        }
         if (averages.isEmpty()) {
             return ResponseEntity.noContent().build();
         }

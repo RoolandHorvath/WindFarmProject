@@ -40,7 +40,7 @@ public class DemoApplication implements CommandLineRunner {
 			System.out.println("Traffic Data Retrieved: " + data.size() + " entries found.");
 			for (TrafficDataDTO entry : data) {
 				if (entry != null) {
-					System.out.println("DatetimeUtc: " + entry.getDatetimeUtc() + ", MMSI: " + entry.getMmsi() +
+					System.out.println("DatetimeUtc: " + entry.getDatetimeUtc() + ", MMSI: " + entry.getMMSI() +
 							", Class: " + entry.getVesselClass() +
 							", Latitude: " + entry.getLatitude() + ", Longitude: " + entry.getLongitude() +
 							", SOG: " + entry.getSog() + ", COG: " + entry.getCog() + ", Heading: " + entry.getHeading());

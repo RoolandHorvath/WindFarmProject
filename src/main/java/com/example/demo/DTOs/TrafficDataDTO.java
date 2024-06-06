@@ -1,7 +1,10 @@
 package com.example.demo.DTOs;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class TrafficDataDTO {
     private String datetimeUtc;
+    @JsonProperty("MMSI")
     private int mmsi;
     private String vesselClass;
     private double latitude;
@@ -18,11 +21,11 @@ public class TrafficDataDTO {
         this.datetimeUtc = datetimeUtc;
     }
 
-    public int getMmsi() {
+    public int getMMSI() {
         return mmsi;
     }
 
-    public void setMmsi(int mmsi) {
+    public void setMMSI(int mmsi) {
         this.mmsi = mmsi;
     }
 

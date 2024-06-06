@@ -5,8 +5,9 @@ import com.example.demo.DTOs.TrafficDataFilteredDTO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -24,15 +25,26 @@ public class TrafficDataService {
         List<Object[]> results = entityManager.createNativeQuery(
                         "SELECT DatetimeUtc, MMSI, Class, Position.ToString() AS pointString, SOG, COG, Heading " +
                                 "FROM TrafficData " +
-                                "WHERE DATEPART(MINUTE, DatetimeUtc) % 5 = 0 AND DATEPART(SECOND, DatetimeUtc) = 0 " +
+                                "WHERE DATEPART(MINUTE, DatetimeUtc) % 20 = 0 AND DATEPART(SECOND, DatetimeUtc) = 0 " +
                                 "ORDER BY DatetimeUtc"
-                ).setMaxResults(100000).getResultList();
+                ).setMaxResults(10000).getResultList();
 
         return results.stream()
                 .map(this::convertToTrafficDataDTO)
                 .collect(Collectors.toList());
     }
 
+    public List<TrafficDataDTO> getTrafficDataByDate(String date) {
+        List<Object[]> results = entityManager.createNativeQuery(
+                        "SELECT DatetimeUtc, MMSI, Class, Position.ToString() AS pointString, SOG, COG, Heading " +
+                                "FROM TrafficData WHERE CONVERT(date, DatetimeUtc) = :date AND DATEPART(MINUTE, DatetimeUtc) % 60 = 0"
+                )
+                .setParameter("date", date)
+                .getResultList();
+        return results.stream()
+                .map(this::convertToTrafficDataDTO)
+                .collect(Collectors.toList());
+    }
 
 
     private TrafficDataDTO convertToTrafficDataDTO(Object[] result) {
@@ -98,4 +110,22 @@ public class TrafficDataService {
         return null;
     }
 
+    public List<TrafficDataFilteredDTO> getDailyAverageTrafficDataByDate(String dateString) {
+        LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ISO_LOCAL_DATE);
+        List<Object[]> results = entityManager.createNativeQuery(
+                        "SELECT CONVERT(DATE, e.DatetimeUtc) AS Date, e.MMSI, AVG(e.SOG) AS AvgSOG, AVG(e.COG) AS AvgCOG " +
+                                "FROM TrafficData e " +
+                                "WHERE e.MMSI IN (232031394, 235108492, 211303540, 235071392, 235090162, 235092439) AND CONVERT(DATE, e.DatetimeUtc) = :date " +
+                                "GROUP BY e.MMSI")
+                .setParameter("date", date)
+                .getResultList();
+
+        return results.stream()
+                .map(result -> new TrafficDataFilteredDTO(
+                        ((Date) result[0]).toLocalDate(),
+                        ((Number) result[1]).intValue(),
+                        ((Number) result[2]).doubleValue(),
+                        ((Number) result[3]).doubleValue()))
+                .collect(Collectors.toList());
+    }
 }
